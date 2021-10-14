@@ -1,23 +1,20 @@
 #pragma once
 #include "distribution.h"
-#include <unordered_set>
-#include <string>
-#include <map>
 #include <cassert>
+#include <map>
+#include <string>
+#include <unordered_set>
 #define assertm(exp, msg) assert(((void)msg, exp))
 
-typedef enum {
-  LINEAR,
-  LOGISTIC
-} growth_model;
+typedef enum { LINEAR, LOGISTIC } growth_model;
 
-// how requests are allocated across instances 
+// how requests are allocated across instances
 typedef enum {
-  RANDOM,     
-  REQUEST,    // request_id % instance_max
-  USERS,      // user_id % instance_max
-  CONTENT,    // ...
-  SITES       // ...
+  RANDOM,
+  REQUEST, // request_id % instance_max
+  USERS,   // user_id % instance_max
+  CONTENT, // ...
+  SITES    // ...
 } load_balance_model;
 
 // signals you can send to other requests
@@ -50,8 +47,8 @@ typedef struct {
   unsigned int content_id;
   unsigned int site_id;
   unsigned long start_tick;
-  unsigned int  self_time_left;
-  unsigned int  network_time_left;
+  unsigned int self_time_left;
+  unsigned int network_time_left;
   bool use_cache;
   bool is_child;
   unsigned int parent_id;
@@ -86,19 +83,21 @@ typedef struct {
 } signal_msg;
 
 // Simulation State (Dyanmic)
-extern std::vector<request> requests;                  // Set of active requests in cluster
-extern std::vector<request> new_requests_this_tick;    // New requests          
-extern std::map<std::string, std::map<int, instance>> instances; // Instance state ( current requests, etc)
-extern std::vector<signal_msg> signals;                    // Set of signals to be handled each tick
-extern tick_clock global_clock;                   // Clock
-extern unsigned long last_request_id;         // Unique request ids
+extern std::vector<request> requests; // Set of active requests in cluster
+extern std::vector<request> new_requests_this_tick; // New requests
+extern std::map<std::string, std::map<int, instance>>
+    instances; // Instance state ( current requests, etc)
+extern std::vector<signal_msg>
+    signals;                          // Set of signals to be handled each tick
+extern tick_clock global_clock;       // Clock
+extern unsigned long last_request_id; // Unique request ids
 
 // Simulation Configuration (Static)
 extern std::unordered_set<std::string> drivers;
-extern std::map<std::string, distribution>   cache;
+extern std::map<std::string, distribution> cache;
 extern std::map<std::string, distribution> latency;
 extern std::map<std::string, distribution> selftime;
-extern std::map<std::string, load_model>   load_models;
+extern std::map<std::string, load_model> load_models;
 extern std::map<std::string, std::map<std::string, distribution>> dependencies;
 extern std::map<std::string, simulated_load> simulation;
 
