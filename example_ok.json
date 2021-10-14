@@ -46,7 +46,7 @@
 	"instances": 10,
 	"balanced": "random",
 	"growthmodel": "linear",
-	"limit": 10,
+	"limit": 50,
 	"load": {
 	    "requests": [ 10, 10, 10, 10, 100, 1000, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 10, 10, 10, 10, 10, 10, 10, 10 ],
 	    "users"   : [ 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 ],
@@ -54,7 +54,7 @@
 	    "sites"   : [ 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 ]
 	},
 	"cache": { "dist": "normal", "mean": 5, "stddev": 1 },
-	"self_time": { "dist": "normal", "mean": 3600000, "stddev": 1800000 },
+	"self_time": { "dist": "normal", "mean": 36000, "stddev": 18000 },
 	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
 	"dependencies": {
 	    "MiddlewareA": { "dist": "normal", "mean": 80, "stddev": 10 },

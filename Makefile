@@ -169,6 +169,60 @@ bte.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/bte.cpp.s
 .PHONY : bte.cpp.s
 
+configure.o: configure.cpp.o
+
+.PHONY : configure.o
+
+# target to build an object file
+configure.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/configure.cpp.o
+.PHONY : configure.cpp.o
+
+configure.i: configure.cpp.i
+
+.PHONY : configure.i
+
+# target to preprocess a source file
+configure.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/configure.cpp.i
+.PHONY : configure.cpp.i
+
+configure.s: configure.cpp.s
+
+.PHONY : configure.s
+
+# target to generate assembly for a file
+configure.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/configure.cpp.s
+.PHONY : configure.cpp.s
+
+distribution.o: distribution.cpp.o
+
+.PHONY : distribution.o
+
+# target to build an object file
+distribution.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/distribution.cpp.o
+.PHONY : distribution.cpp.o
+
+distribution.i: distribution.cpp.i
+
+.PHONY : distribution.i
+
+# target to preprocess a source file
+distribution.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/distribution.cpp.i
+.PHONY : distribution.cpp.i
+
+distribution.s: distribution.cpp.s
+
+.PHONY : distribution.s
+
+# target to generate assembly for a file
+distribution.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/distribution.cpp.s
+.PHONY : distribution.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -181,6 +235,12 @@ help:
 	@echo "... bte.o"
 	@echo "... bte.i"
 	@echo "... bte.s"
+	@echo "... configure.o"
+	@echo "... configure.i"
+	@echo "... configure.s"
+	@echo "... distribution.o"
+	@echo "... distribution.i"
+	@echo "... distribution.s"
 .PHONY : help
 
 

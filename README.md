@@ -14,6 +14,8 @@ This is currently one giant C++ file. The the appropriate encouragement I can ma
 > cmake --build .
 ```
 
+This project uses rapidjson.
+
 ## Running
 
 `> bte input.json output.csv`
