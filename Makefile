@@ -169,6 +169,33 @@ bte.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/bte.cpp.s
 .PHONY : bte.cpp.s
 
+capacity_model.o: capacity_model.cpp.o
+
+.PHONY : capacity_model.o
+
+# target to build an object file
+capacity_model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/capacity_model.cpp.o
+.PHONY : capacity_model.cpp.o
+
+capacity_model.i: capacity_model.cpp.i
+
+.PHONY : capacity_model.i
+
+# target to preprocess a source file
+capacity_model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/capacity_model.cpp.i
+.PHONY : capacity_model.cpp.i
+
+capacity_model.s: capacity_model.cpp.s
+
+.PHONY : capacity_model.s
+
+# target to generate assembly for a file
+capacity_model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/capacity_model.cpp.s
+.PHONY : capacity_model.cpp.s
+
 configure.o: configure.cpp.o
 
 .PHONY : configure.o
@@ -223,6 +250,33 @@ distribution.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/distribution.cpp.s
 .PHONY : distribution.cpp.s
 
+loadbalance_model.o: loadbalance_model.cpp.o
+
+.PHONY : loadbalance_model.o
+
+# target to build an object file
+loadbalance_model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/loadbalance_model.cpp.o
+.PHONY : loadbalance_model.cpp.o
+
+loadbalance_model.i: loadbalance_model.cpp.i
+
+.PHONY : loadbalance_model.i
+
+# target to preprocess a source file
+loadbalance_model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/loadbalance_model.cpp.i
+.PHONY : loadbalance_model.cpp.i
+
+loadbalance_model.s: loadbalance_model.cpp.s
+
+.PHONY : loadbalance_model.s
+
+# target to generate assembly for a file
+loadbalance_model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/loadbalance_model.cpp.s
+.PHONY : loadbalance_model.cpp.s
+
 simulator.o: simulator.cpp.o
 
 .PHONY : simulator.o
@@ -262,12 +316,18 @@ help:
 	@echo "... bte.o"
 	@echo "... bte.i"
 	@echo "... bte.s"
+	@echo "... capacity_model.o"
+	@echo "... capacity_model.i"
+	@echo "... capacity_model.s"
 	@echo "... configure.o"
 	@echo "... configure.i"
 	@echo "... configure.s"
 	@echo "... distribution.o"
 	@echo "... distribution.i"
 	@echo "... distribution.s"
+	@echo "... loadbalance_model.o"
+	@echo "... loadbalance_model.i"
+	@echo "... loadbalance_model.s"
 	@echo "... simulator.o"
 	@echo "... simulator.i"
 	@echo "... simulator.s"

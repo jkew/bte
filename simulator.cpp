@@ -4,6 +4,9 @@
 
 using namespace std;
 
+bool try_start(string node, unsigned int instance_id);
+unsigned int get_instance(load_model l, request r);
+
 void send_signal(signal_msg s) { signals.push_back(s); }
 
 void handle_signal(signal_msg s) {
@@ -26,22 +29,6 @@ void handle_signal(signal_msg s) {
                    requests.end());
     instances[s.src_node][s.src_instance_id].current_request_count--;
   } break;
-  }
-}
-
-unsigned int get_instance(load_model l, request r) {
-  switch (l.balance) {
-  case load_balance_model::RANDOM: {
-    return get_value_uniform(0, l.instances - 1);
-  }
-  case load_balance_model::REQUEST:
-    return r.id % l.instances;
-  case load_balance_model::USERS:
-    return r.user_id % l.instances;
-  case load_balance_model::CONTENT:
-    return r.content_id % l.instances;
-  case load_balance_model::SITES:
-    return r.site_id % l.instances;
   }
 }
 
@@ -99,35 +86,6 @@ unsigned int sum_requests(string node) {
     request_cnt += inst.second.current_request_count;
   }
   return request_cnt;
-}
-
-//=(1/(1+e^(-1(x-[mid_point]))))*[limit]
-bool try_start_logistic(unsigned int limit, unsigned int current_load) {
-  unsigned int mid_point = (int)(limit / 2);
-  unsigned int adj_limit =
-      (unsigned int)(1.0 / (1.0 + exp(-1.0 * (current_load - mid_point)))) *
-      limit;
-  if (adj_limit == 0)
-    adj_limit = 1;
-  return (current_load <= adj_limit);
-}
-
-bool try_start_linear(unsigned int limit, unsigned int current_load) {
-  return (current_load <= limit);
-}
-
-bool try_start(string node, unsigned int instance_id) {
-  growth_model model = load_models[node].model;
-  unsigned int limit = load_models[node].limit;
-  unsigned int current_load =
-      instances[node][instance_id].current_request_count;
-  switch (model) {
-  case LINEAR:
-    return try_start_linear(limit, current_load);
-  case LOGISTIC:
-    return try_start_logistic(limit, current_load);
-  }
-  return true;
 }
 
 // returns false if request is removable
