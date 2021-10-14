@@ -223,6 +223,33 @@ distribution.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/distribution.cpp.s
 .PHONY : distribution.cpp.s
 
+simulator.o: simulator.cpp.o
+
+.PHONY : simulator.o
+
+# target to build an object file
+simulator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/simulator.cpp.o
+.PHONY : simulator.cpp.o
+
+simulator.i: simulator.cpp.i
+
+.PHONY : simulator.i
+
+# target to preprocess a source file
+simulator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/simulator.cpp.i
+.PHONY : simulator.cpp.i
+
+simulator.s: simulator.cpp.s
+
+.PHONY : simulator.s
+
+# target to generate assembly for a file
+simulator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bte.dir/build.make CMakeFiles/bte.dir/simulator.cpp.s
+.PHONY : simulator.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -241,6 +268,9 @@ help:
 	@echo "... distribution.o"
 	@echo "... distribution.i"
 	@echo "... distribution.s"
+	@echo "... simulator.o"
+	@echo "... simulator.i"
+	@echo "... simulator.s"
 .PHONY : help
 
 

@@ -104,3 +104,4 @@ extern std::map<std::string, simulated_load> simulation;
 
 void print_dist(distribution d);
 void print_node(const char *node);
+void print_stats();
