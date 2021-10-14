@@ -1,0 +1,123 @@
+{
+    "ms_per_tick": 100,
+    "drivers": ["FrontendA", "FrontendB", "BackgroundProcess"],
+    "FrontendA": {
+	"instances": 10,
+	"balanced": "content",
+	"growthmodel": "linear",
+	"limit": 10,
+	"load": {
+	    "requests": [ 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100 ],
+	    "users"   : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 ],
+	    "content" : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 ],
+	    "sites"   : [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 ]
+	},
+	"cache": { "dist": "normal", "mean": 50, "stddev": 25 },
+	"self_time": { "dist": "normal", "mean": 1000, "stddev": 250 },
+	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
+	"dependencies": {
+	    "MiddlewareA": { "dist": "normal", "mean": 50, "stddev": 10 },
+	    "DataStoreA": { "dist": "normal", "mean": 50, "stddev": 10 },
+	    "DataStoreB": { "dist": "normal", "mean": 50, "stddev": 10 },
+	    "DataStoreD": { "dist": "normal", "mean": 50, "stddev": 25 }
+	}
+    },
+    "FrontendB": {
+	"instances": 10,
+	"balanced": "content",
+	"growthmodel": "linear",
+	"limit": 10,
+	"load": {
+	    "requests": [ 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100 ],
+	    "users"   : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 ],
+	    "content" : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 ],
+	    "sites"   : [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 ]
+	},
+	"cache": { "dist": "normal", "mean": 50, "stddev": 25 },
+	"self_time": { "dist": "normal", "mean": 1000, "stddev": 250 },
+	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
+	"dependencies": {
+	    "MiddlewareA": { "dist": "normal", "mean": 50, "stddev": 10 },
+	    "DataStoreA": { "dist": "normal", "mean": 50, "stddev": 10 },
+	    "DataStoreB": { "dist": "normal", "mean": 50, "stddev": 10 }
+	}
+    },   
+    "BackgroundProcess": {
+	"instances": 10,
+	"balanced": "random",
+	"growthmodel": "linear",
+	"limit": 10,
+	"load": {
+	    "requests": [ 10, 10, 10, 10, 100, 1000, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 10, 10, 10, 10, 10, 10, 10, 10 ],
+	    "users"   : [ 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 ],
+	    "content" : [ 10, 10, 10, 10, 100, 1000, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 10, 10, 10, 10, 10, 10, 10, 10 ],
+	    "sites"   : [ 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 ]
+	},
+	"cache": { "dist": "normal", "mean": 5, "stddev": 1 },
+	"self_time": { "dist": "normal", "mean": 3600000, "stddev": 1800000 },
+	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
+	"dependencies": {
+	    "MiddlewareA": { "dist": "normal", "mean": 80, "stddev": 10 },
+	    "DataStoreA": { "dist": "normal", "mean": 90, "stddev": 10 },
+	    "DataStoreB": { "dist": "normal", "mean": 90, "stddev": 10 },
+	    "DataStoreD": { "dist": "normal", "mean": 90, "stddev": 10 }
+	}
+    },  
+    "MiddlewareA": {
+	"instances": 10,
+	"balanced": "content",
+	"growthmodel": "linear",
+	"limit": 100,
+	"cache": { "dist": "normal", "mean": 20, "stddev": 5 },
+	"self_time": { "dist": "normal", "mean": 1000, "stddev": 250 },
+	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
+	"dependencies": {
+	    "DataStoreA": { "dist": "normal", "mean": 80, "stddev": 20 }, 
+	    "DataStoreB": { "dist": "normal", "mean": 30, "stddev": 10 },
+	    "DataStoreC": { "dist": "normal", "mean": 100, "stddev": 1 },
+	    "DataStoreD": { "dist": "normal", "mean": 50, "stddev": 25 }
+	}
+    },
+    "DataStoreA": {
+	"instances": 10,
+	"balanced": "random",
+	"growthmodel": "linear",
+	"limit": 50,
+	"cache": { "dist": "normal", "mean": 50, "stddev": 25 },
+	"self_time": { "dist": "normal", "mean": 100, "stddev": 50 },
+	"network_latency": { "dist": "normal", "mean": 20, "stddev": 5 },
+	"dependencies": {
+	    "DataStoreC": { "dist": "normal", "mean": 5, "stddev": 1 }
+	}
+    },
+    "DataStoreB": {
+	"instances": 100,
+	"balanced": "content",
+	"growthmodel": "logistic",
+	"limit": 1600,
+	"cache": { "dist": "normal", "mean": 10, "stddev": 1 },
+	"self_time": { "dist": "uniform", "min": 100, "max": 1000 },
+	"network_latency": { "dist": "uniform", "min": 100, "max": 1000 },
+	"dependencies": {}
+    },
+    "DataStoreC": {
+	"instances": 1,
+	"balanced": "content",
+	"growthmodel": "linear",
+	"limit": 25,
+	"cache": { "dist": "normal", "mean": 20, "stddev": 5 },
+	"self_time": { "dist": "normal", "mean": 1000, "stddev": 500 },
+	"network_latency": { "dist": "normal", "mean": 100, "stddev": 50 },
+	"dependencies": {}
+    },
+    "DataStoreD": {
+	"instances": 1,
+	"balanced": "content",
+	"growthmodel": "linear",
+	"limit": 250,
+	"cache": { "dist": "normal", "mean": 25, "stddev": 5 },
+	"self_time": { "dist": "normal", "mean": 50, "stddev": 25 },
+	"network_latency": { "dist": "normal", "mean": 500, "stddev": 250 },
+	"dependencies": {}
+    }
+}
