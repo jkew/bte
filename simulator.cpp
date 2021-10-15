@@ -61,7 +61,7 @@ void create_request(string node, unsigned long parent_id,
   new_request.network_time_left = get_value(latency[node]);
   // use cache / self time
   unsigned int cache_value = get_value(cache[node]);
-  if (cache_value > get_value_uniform(1, 100)) {
+  if (cache_value > 50) {
     new_request.use_cache = true;
     new_request.self_time_left = 0;
   } else {
@@ -176,7 +176,19 @@ bool tick() {
         for (int r = 0; r < simulation[d].hours[global_clock.hour - 1].requests;
              r++) {
           // create external load request
-          unsigned long ms_splay = get_value_uniform(1, 1000 * 60 * 60);
+	  unsigned long ms_splay;
+	  switch (simulation[d].distribution) {
+	  case UNIFORM:
+	    ms_splay = get_value_uniform(1, 3600000);
+	    break;
+	  case NORMAL:  // This really isn't a useful load model
+	    ms_splay = get_value_normal(30, 15)*60000;
+	    break;
+	  case GEOMETRIC:
+	    ms_splay = get_value_geometric(0.1) * 36000;
+	    break;
+	  }
+
           unsigned long tick_splay = ms_splay / global_clock.ms_per_tick;
           unsigned long adjusted_start_tick =
               global_clock.current_tick + tick_splay;

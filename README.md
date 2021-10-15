@@ -4,8 +4,6 @@ The (Not Much) Better Than Excel Distributed Systems Simulator fills a gap where
 
 This can help illuminate choke points or issues in a fast and simple way to people inexperienced with the subtlities of the problems. It CANNOT help with correctness (this is not TLA+). It CANNOT help solve existing performance issues. It can help answer very simple what if questions.
 
-This is currently one giant C++ file. The the appropriate encouragement I can make it all fancy-pants.
-
 ## Building
 ```
 > mkdir build
@@ -50,14 +48,15 @@ A node type is defined with an object such as
         "growthmodel": "linear",  // capacity growth model
         "limit": 10,              // capacity limit
         "load": {                 // external load to generate per hour
+        	  "distribution": "geometric",
             "requests": [...],
             "users"   : [...],
             "content" : [...],
             "sites"   : [...]
         },
         "cache": { "dist": "normal", "mean": 50, "stddev": 25 },
-        "self_time": { "dist": "normal", "mean": 1000, "stddev": 250 },
-        "network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
+        "self_time": { "dist": "uniform", "min": 10, "max": 250 },
+        "network_latency": { "dist": "geometric", "prob": 0.05},
         "dependencies": {
             "NodeTypeB": { "dist": "normal", "mean": 50, "stddev": 10 },
             "NodeTypeC": { "dist": "normal", "mean": 50, "stddev": 10 },
@@ -69,12 +68,18 @@ A node type is defined with an object such as
 * `balanced` defines how requests are balanced across those instances. The options are `random`, `content`, `sites`, `users`
 * `growthmodel` defines how capacity on an instance is regulated as load changes. Currently the options are simple `linear` and `logistic` models
 * `limit` is used by the growth model to set the current capacity
-* `load` is used by the load drivers within the cluster to define the requests and the maximum distinct users, content, and sites to generate per hour. Each of the requests is uniformly distributed between the hours. Each of these arrays should be of length 24 (for each hour of the day) and integers.
-* `cache` defines the probability that the cache will be hit for a request. you specify a distribution (currently `uniform` or `normal`). Values need to be between 0-100.
-* `self_time` defines the time spent servicing the request by the instance itself. It is specified in a distribution of milliseconds in either a `uniform` (with a `max` and `min`) or `normal` distribution (with `mean` and `stddev`.
+* `load` is used by the load drivers within the cluster to define the requests and the maximum distinct users, content, and sites to generate per hour. Each of these arrays should be of length 24 (for each hour of the day) and integers. You must specify how the load is distributed throughout the hour. The choices are `geometric` where most load is distributed at the start of the hour, `uniform` where it is distributed uniformly throughout the hour, and `normal` which is a normal distribution around the 30 minute mark. The parameterization of these distributions is fixed.
+* `cache` defines the probability that the cache will be hit for a request. you specify a distribution (`uniform` or `normal`). A value above 50 will use the cache, so the distributions should be sensibly configured.
+* `self_time` defines the time spent servicing the request by the instance itself. It is specified in a distribution of milliseconds in either a `uniform` or `normal` distribution  or `geometric`.
 * `network_latency` is similar to `self_time`, but cache hits will not impact it.
 * `dependencies` is a list of node types this node depends on and the probability that a particular dependency will be used.
 
+### A note on distributions
+The std c++ [libraries ](https://www.cplusplus.com/reference/random/normal_distribution/)are used to generate the distributions. Some care should be used to pick distributions that may sense and that the parameters are correct. For load distribution within an hour, "normally" distributed load generation make very little sense, but a "geometrically" decreasing load makes sense for jobs which often start on the hour.
+
+* `uniform` only uses the parameters `max` and `min`
+* `normal` uses the parameters `mean` and `stddev`
+* `geometric` uses `prob` which is the probability of each trial
 
 ## Analyzing
 The output of the csv can be used with the visualization tool of your choice. A Tableau workbook is provided to help (used above).

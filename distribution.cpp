@@ -5,6 +5,17 @@ using namespace std;
 
 default_random_engine generator;
 
+unsigned int get_value_geometric(double prob) {
+  geometric_distribution<int> distribution(prob);
+  double number = distribution(generator);
+  if (number < 0) number = 0;
+  return (unsigned int) number;
+}
+
+unsigned int get_value_geometric(distribution d) {
+  return get_value_geometric(d.prob);
+}
+
 unsigned int get_value_uniform(unsigned int min, unsigned int max) {
   uniform_int_distribution<int> distribution(min, max);
   double number = distribution(generator);
@@ -18,7 +29,7 @@ unsigned int get_value_uniform(distribution d) {
 }
 
 unsigned int get_value_normal(unsigned int mean, unsigned int stddev) {
-  normal_distribution<int> distribution(mean, stddev);
+  normal_distribution<double> distribution(mean, stddev);
   double number = distribution(generator);
   if (number < 0)
     number = 0;
@@ -35,6 +46,8 @@ unsigned int get_value(distribution d) {
     return get_value_normal(d);
   case UNIFORM:
     return get_value_uniform(d);
+  case GEOMETRIC:
+    return get_value_geometric(d);
   default:
     assert(false);
   }

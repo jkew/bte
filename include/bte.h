@@ -38,6 +38,7 @@ typedef struct {
 } external_load;
 
 typedef struct {
+  dist_model distribution;
   external_load hours[24];
 } simulated_load;
 

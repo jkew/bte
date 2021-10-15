@@ -24,6 +24,8 @@ void initialize_simulation() {
     simulated_load sim;
     assertm(config[v.GetString()].HasMember("load"),
             "No hourly load configured for driver");
+    assertm(config[v.GetString()]["load"].HasMember("distribution"),
+		"No distribution set for hourly load");
     assertm(config[v.GetString()]["load"].HasMember("requests"),
             "No hourly request load");
     assertm(config[v.GetString()]["load"].HasMember("users"),
@@ -48,6 +50,16 @@ void initialize_simulation() {
             "load must be an 24 array");
     assertm(config[v.GetString()]["load"]["sites"].Size() == 24,
             "load must be an 24 array");
+
+    string d = config[v.GetString()]["load"]["distribution"].GetString();
+    
+    if (d == "uniform")
+      sim.distribution = dist_model::UNIFORM;
+    if (d == "normal")
+      sim.distribution = dist_model::NORMAL;
+    if (d == "geometric")
+      sim.distribution = dist_model::GEOMETRIC;
+    
     for (int i = 0; i < 24; i++) {
       external_load hour_load;
       hour_load.requests =
@@ -91,6 +103,11 @@ distribution configure_dist(const Value &input) {
     assert(input["max"].IsInt());
     d.min = input["min"].GetInt();
     d.max = input["max"].GetInt();
+  } else if (strcmp(input["dist"].GetString(), "geometric") == 0) {
+    d.dist = dist_model::GEOMETRIC;
+    assertm(input.HasMember("prob"), "Probability not set on geometric distribution");
+    assert(input["prob"].IsDouble());
+    d.prob = input["prob"].GetDouble();
   } else {
     assertm(false, "Only normal distributions are supported");
   }
