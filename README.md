@@ -18,7 +18,7 @@ This project uses rapidjson.
 
 `> bte input.json output.csv`
 
-The tool will print some output on it's configuration and then begin running the simulation. The csv file will contain data with the tick, node type, instance id of that node, and the current number of requests on that instance.
+The tool will print some output on it's configuration and then begin running the simulation. The csv file will contain data with the tick, node type, instance id of that node, the current number of requests on that instance, as well as the timeouts and median latency for requests on that instance.
 
 ## Examples:
 Imagine the organically-grown, no preservatives cluster of something below. Why does the SpeedyDataStore talk to the Singleton PostgreSQL? No one knows; but it was the right decision at the time. All the load comes in through a background process and two different frontends. 
@@ -27,15 +27,17 @@ Imagine the organically-grown, no preservatives cluster of something below. Why 
 ### **example_ok.json** 
 A cluster with some cycles in the dependencies which slowly ramps up load and then down. The Background jobs have a geometric distribution on the hour; meaning that most of the jobs are started within the first 15 minutes. Frontend A has a uniform load distribution coming in but Frontend B has a normal distribution.
 
-Each node type has different latencies, self-time latencies, timeouts and cache hit rates.
+Each node type has different latencies, self-time latencies, timeouts and cache hit rates, as well as different ways of balancing load across the instances.
 
 In the image below each node type is a row and the colors represent individual instances. The y axis is the number of current requests. When a large background operation occurs at around minute 300 we see that cascade through the cluster.
+
 **Active Requests:** sum of active requests across instances
 ![](example_ok.png)
 **Latency:** p95 of the median of each instance per tick 
 ![](example_ok_latency.png)
 **Timeouts:** sum of timeouts per instance per tick 
 ![](example_ok_timeouts.png)
+
 ### **example_degenerate.json** 
 Same as example_ok.json but we cut the capacity of the SingletonPSQL by hal f which gets saturated; which results in the latency issues and requests building up across the cluster.
 
