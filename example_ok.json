@@ -3,6 +3,7 @@
     "drivers": ["FrontendA", "FrontendB", "BackgroundProcess"],
     "FrontendA": {
 	"instances": 10,
+	"timeout": 900000,
 	"balanced": "content",
 	"growthmodel": "linear",
 	"limit": 10,
@@ -18,13 +19,14 @@
 	"network_latency": { "dist": "geometric", "prob": 0.05 },
 	"dependencies": {
 	    "MiddlewareA": { "dist": "normal", "mean": 50, "stddev": 10 },
-	    "DataStoreA": { "dist": "normal", "mean": 50, "stddev": 10 },
-	    "DataStoreB": { "dist": "normal", "mean": 50, "stddev": 10 },
-	    "DataStoreD": { "dist": "normal", "mean": 50, "stddev": 25 }
+	    "SpeedyDataStore": { "dist": "normal", "mean": 50, "stddev": 10 },
+	    "ExternalDBS": { "dist": "normal", "mean": 50, "stddev": 10 },
+	    "Redis": { "dist": "normal", "mean": 50, "stddev": 25 }
 	}
     },
     "FrontendB": {
 	"instances": 10,
+	"timeout": 900000,
 	"balanced": "content",
 	"growthmodel": "linear",
 	"limit": 10,
@@ -39,13 +41,12 @@
 	"self_time": { "dist": "normal", "mean": 1000, "stddev": 250 },
 	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
 	"dependencies": {
-	    "MiddlewareA": { "dist": "normal", "mean": 50, "stddev": 10 },
-	    "DataStoreA": { "dist": "normal", "mean": 50, "stddev": 10 },
-	    "DataStoreB": { "dist": "normal", "mean": 50, "stddev": 10 }
+	    "SingletonPSQL": { "dist": "normal", "mean": 50, "stddev": 10 }
 	}
     },   
     "BackgroundProcess": {
 	"instances": 10,
+	"timeout": 7200000,
 	"balanced": "random",
 	"growthmodel": "linear",
 	"limit": 250,
@@ -61,13 +62,15 @@
 	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
 	"dependencies": {
 	    "MiddlewareA": { "dist": "normal", "mean": 80, "stddev": 10 },
-	    "DataStoreA": { "dist": "normal", "mean": 90, "stddev": 10 },
-	    "DataStoreB": { "dist": "normal", "mean": 90, "stddev": 10 },
-	    "DataStoreD": { "dist": "normal", "mean": 90, "stddev": 10 }
+	    "SpeedyDataStore": { "dist": "normal", "mean": 90, "stddev": 10 },
+	    "ExternalDBS": { "dist": "normal", "mean": 90, "stddev": 10 },
+	    "SingletonPSQL": { "dist": "normal", "mean": 90, "stddev": 10 },
+	    "Redis": { "dist": "normal", "mean": 90, "stddev": 10 }
 	}
     },  
     "MiddlewareA": {
 	"instances": 10,
+	"timeout": 7200000,
 	"balanced": "content",
 	"growthmodel": "linear",
 	"limit": 100,
@@ -75,14 +78,15 @@
 	"self_time": { "dist": "normal", "mean": 1000, "stddev": 250 },
 	"network_latency": { "dist": "normal", "mean": 250, "stddev": 50 },
 	"dependencies": {
-	    "DataStoreA": { "dist": "normal", "mean": 80, "stddev": 20 }, 
-	    "DataStoreB": { "dist": "normal", "mean": 30, "stddev": 10 },
-	    "DataStoreC": { "dist": "normal", "mean": 100, "stddev": 1 },
-	    "DataStoreD": { "dist": "normal", "mean": 50, "stddev": 25 }
+	    "SpeedyDataStore": { "dist": "normal", "mean": 80, "stddev": 20 }, 
+	    "ExternalDBS": { "dist": "normal", "mean": 30, "stddev": 10 },
+	    "SingletonPSQL": { "dist": "normal", "mean": 100, "stddev": 1 },
+	    "Redis": { "dist": "normal", "mean": 50, "stddev": 25 }
 	}
     },
-    "DataStoreA": {
+    "SpeedyDataStore": {
 	"instances": 10,
+	"timeout": 7200000,
 	"balanced": "random",
 	"growthmodel": "linear",
 	"limit": 50,
@@ -90,21 +94,23 @@
 	"self_time": { "dist": "normal", "mean": 100, "stddev": 50 },
 	"network_latency": { "dist": "normal", "mean": 20, "stddev": 5 },
 	"dependencies": {
-	    "DataStoreC": { "dist": "normal", "mean": 5, "stddev": 1 }
+	    "SingletonPSQL": { "dist": "normal", "mean": 5, "stddev": 1 }
 	}
     },
-    "DataStoreB": {
-	"instances": 10,
+    "ExternalDBS": {
+	"instances": 100,
+	"timeout": 7200000,
 	"balanced": "content",
 	"growthmodel": "logistic",
-	"limit": 1600,
+	"limit": 100,
 	"cache": { "dist": "normal", "mean": 10, "stddev": 1 },
 	"self_time": { "dist": "uniform", "min": 100, "max": 1000 },
 	"network_latency": { "dist": "uniform", "min": 100, "max": 1000 },
 	"dependencies": {}
     },
-    "DataStoreC": {
+    "SingletonPSQL": {
 	"instances": 1,
+	"timeout": 7200000,
 	"balanced": "content",
 	"growthmodel": "linear",
 	"limit": 250,
@@ -113,8 +119,9 @@
 	"network_latency": { "dist": "normal", "mean": 100, "stddev": 50 },
 	"dependencies": {}
     },
-    "DataStoreD": {
+    "Redis": {
 	"instances": 1,
+	"timeout": 120000,
 	"balanced": "content",
 	"growthmodel": "linear",
 	"limit": 250,

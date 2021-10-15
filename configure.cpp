@@ -131,6 +131,8 @@ void configure(const char *node) {
           "Node does have dependency configuration");
   assertm(config[node].HasMember("instances"),
           "Node does not specify the number of instances");
+  assertm(config[node].HasMember("timeout"),
+	  "Node does not specify the number of timeout");
   assertm(config[node].HasMember("balanced"),
           "Node does not specify how load is balanced across instances");
   assertm(config[node].HasMember("growthmodel"),
@@ -156,10 +158,12 @@ void configure(const char *node) {
   selftime[string(node)] = self_value;
   load_model load;
   assert(config[node]["instances"].IsInt());
+  assert(config[node]["timeout"].IsInt());
   assert(config[node]["limit"].IsInt());
   load.instances = config[node]["instances"].GetInt();
   load.limit = config[node]["limit"].GetInt();
-
+  load.timeout = config[node]["timeout"].GetInt();
+  
   // How is the response rate impacted by concurrent requests
   if (strcmp(config[node]["growthmodel"].GetString(), "linear") == 0) {
     load.model = growth_model::LINEAR;

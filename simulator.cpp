@@ -93,7 +93,7 @@ bool tick_request(request &r) {
   assert(!r.node.empty());
   if (r.start_tick > global_clock.current_tick)
     return true; // wait until the actual start time
-
+  
   // cout << "r: " << r.node << " id:" << r.id << " st:" << r.self_time_left <<
   // " nt:" << r.network_time_left << " deps:" << r.dependencies.size() << "
   // instance: " << r.instance_id << " started: " << r.is_started << endl;
@@ -107,6 +107,16 @@ bool tick_request(request &r) {
     instances[r.node][r.instance_id].current_request_count++;
   }
 
+  // Handle timeouts
+  unsigned int timeout = load_models[r.node].timeout;
+  unsigned int timespent = (global_clock.current_tick - r.start_tick) * global_clock.ms_per_tick;
+  if (timespent > timeout) {
+    // Right now we do not do anything but terminate the request
+    // we could send a signal though and terminate upstream requests as well
+    goto term;
+  }
+
+  
   if (!r.dependencies_created) {
     for (const auto d : r.dependencies) {
       assert(!d.empty());
@@ -131,6 +141,8 @@ bool tick_request(request &r) {
   if (r.dependencies.size() > 0)
     return true; // keep waiting for my children
 
+ term:
+  
   // if we got here we might be able to finish the job
   // notify parent
   if (r.is_child) {

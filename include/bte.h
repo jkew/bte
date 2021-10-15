@@ -26,6 +26,7 @@ typedef enum {
 typedef struct {
   unsigned int instances;
   unsigned int limit;
+  unsigned int timeout;
   growth_model model;
   load_balance_model balance;
 } load_model;
@@ -65,6 +66,7 @@ typedef struct {
   std::string node;
   unsigned int instance_id;
   unsigned int current_request_count;
+  unsigned int timeouts;
 } instance;
 
 typedef struct {
