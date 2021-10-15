@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
     return 1;
 
   stats.open(argv[2]);
-  stats << "tick, node_type, instance_id, load" << endl;
+  stats << "tick, node_type, instance_id, load, completed, timeouts, median_latency" << endl;
   while (tick())
     ;
   cout << "# Completed simulation ticks: " << global_clock.current_tick
@@ -54,10 +54,23 @@ int main(int argc, char **argv) {
 };
 
 void print_stats() {
-  for (const auto &n : instances) {
-    for (const auto &i : n.second) {
+  for (auto &n : instances) {
+    for (auto &i : n.second) {
+      unsigned median = 0;
+      unsigned int size = i.second.completed_request_times.size();
+      if (size > 0) {
+	unsigned int mid = size/2;
+	std::nth_element(i.second.completed_request_times.begin(),
+		       i.second.completed_request_times.begin() + mid,
+		       i.second.completed_request_times.end());
+	median = i.second.completed_request_times[mid];
+      }
       stats << global_clock.current_tick << "," << n.first << "," << i.first
-            << "," << i.second.current_request_count << endl;
+            << "," << i.second.current_request_count
+	    << "," << size
+	    << "," << i.second.timeouts
+	    << "," << median
+	    << endl;
     }
   }
 }

@@ -3,6 +3,7 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <vector>
 #include <unordered_set>
 #define assertm(exp, msg) assert(((void)msg, exp))
 
@@ -67,6 +68,7 @@ typedef struct {
   unsigned int instance_id;
   unsigned int current_request_count;
   unsigned int timeouts;
+  std::vector<int>  completed_request_times;
 } instance;
 
 typedef struct {

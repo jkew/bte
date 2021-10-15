@@ -113,6 +113,7 @@ bool tick_request(request &r) {
   if (timespent > timeout) {
     // Right now we do not do anything but terminate the request
     // we could send a signal though and terminate upstream requests as well
+    instances[r.node][r.instance_id].timeouts++;
     goto term;
   }
 
@@ -164,6 +165,9 @@ bool tick_request(request &r) {
   term.src_instance_id = r.instance_id;
   term.src_node = r.node;
   send_signal(term);
+
+  instances[r.node][r.instance_id].completed_request_times.push_back(global_clock.current_tick - r.start_tick);
+  
   // cout << "r: " << r.node << " id:" << r.id << " TERM" << endl;
   return false;
 }
@@ -234,6 +238,14 @@ bool tick() {
     }
     signals.clear();
     print_stats();
+
+    // reset counters
+    for (auto &n : instances) {
+      for (auto &i : n.second) {
+	i.second.timeouts = 0;
+	i.second.completed_request_times.clear();
+      }
+    }
     return true;
   }
   return false;

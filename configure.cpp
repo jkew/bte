@@ -198,6 +198,7 @@ void configure(const char *node) {
     inst.node = string(node);
     inst.instance_id = i;
     inst.current_request_count = 0;
+    inst.timeouts = 0;
     instances[string(node)][i] = inst;
   }
 

@@ -20,22 +20,33 @@ This project uses rapidjson.
 
 The tool will print some output on it's configuration and then begin running the simulation. The csv file will contain data with the tick, node type, instance id of that node, and the current number of requests on that instance.
 
-### Examples:
+## Examples:
 Imagine the organically-grown, no preservatives cluster of something below. Why does the SpeedyDataStore talk to the Singleton PostgreSQL? No one knows; but it was the right decision at the time. All the load comes in through a background process and two different frontends. 
 ![](example.png)
 
-#### **example_ok.json** 
+### **example_ok.json** 
 A cluster with some cycles in the dependencies which slowly ramps up load and then down. The Background jobs have a geometric distribution on the hour; meaning that most of the jobs are started within the first 15 minutes. Frontend A has a uniform load distribution coming in but Frontend B has a normal distribution.
 
 Each node type has different latencies, self-time latencies, timeouts and cache hit rates.
 
 In the image below each node type is a row and the colors represent individual instances. The y axis is the number of current requests. When a large background operation occurs at around minute 300 we see that cascade through the cluster.
+**Active Requests:** sum of active requests across instances
 ![](example_ok.png)
-#### **example_degenerate.json** 
+**Latency:** p95 of the median of each instance per tick 
+![](example_ok_latency.png)
+**Timeouts:** sum of timeouts per instance per tick 
+![](example_ok_timeouts.png)
+### **example_degenerate.json** 
 Same as example_ok.json but we cut the capacity of the SingletonPSQL by hal f which gets saturated; which results in the latency issues and requests building up across the cluster.
 
-![](example_degenerate.png)
+With this single change we see that almost everything gets worse.
 
+**Active Requests:** sum of active requests across instances
+![](example_degenerate.png)
+**Latency:** p95 of the median of each instance per tick 
+![](example_degenerate_latency.png)
+**Timeouts:** sum of timeouts per instance per tick 
+![](example_degenerate_timeouts.png)
 ## Configuration
 
 `ms_per_tick` is the number of milliseconds per simulation tick
@@ -85,7 +96,7 @@ A node type is defined with an object such as
 * `dependencies` is a list of node types this node depends on and the probability that a particular dependency will be used.
 
 ### A note on distributions
-The std c++ [libraries ](https://www.cplusplus.com/reference/random/normal_distribution/)are used to generate the distributions. Some care should be used to pick distributions that may sense and that the parameters are correct. For load distribution within an hour, "normally" distributed load generation make very little sense, but a "geometrically" decreasing load makes sense for jobs which often start on the hour.
+The std c++ [libraries ](https://www.cplusplus.com/reference/random/normal_distribution/)are used to generate the distributions. Some care should be used to pick distributions that make sense and that the parameters are correct. For load distribution within an hour, "normally" distributed load generation make very little sense, but a "geometrically" decreasing load makes sense for jobs which often start on the hour.
 
 * `uniform` only uses the parameters `max` and `min`
 * `normal` uses the parameters `mean` and `stddev`
