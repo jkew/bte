@@ -16,7 +16,7 @@
 	},
 	"cache": { "dist": "normal", "mean": 50, "stddev": 25 },
 	"self_time": { "dist": "normal", "mean": 1000, "stddev": 250 },
-	"network_latency": { "dist": "geometric", "prob": 0.05 },
+	"network_latency": { "dist": "geometric", "mean": 10 },
 	"dependencies": {
 	    "MiddlewareA": { "dist": "normal", "mean": 50, "stddev": 10 },
 	    "SpeedyDataStore": { "dist": "normal", "mean": 50, "stddev": 10 },

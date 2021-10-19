@@ -9,9 +9,10 @@ typedef struct {
   unsigned int min;
   unsigned int max;
   double prob;
+  double factor;
 } distribution;
 
-unsigned int get_value_geometric(double prob);
+unsigned int get_value_geometric(unsigned int mean);
 unsigned int get_value_geometric(distribution d);
 unsigned int get_value_uniform(unsigned int min, unsigned int max);
 unsigned int get_value_uniform(distribution d);

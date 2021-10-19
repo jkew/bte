@@ -201,7 +201,7 @@ bool tick() {
 	    ms_splay = get_value_normal(30, 15)*60000;
 	    break;
 	  case GEOMETRIC:
-	    ms_splay = get_value_geometric(0.1) * 36000;
+	    ms_splay = get_value_geometric(900000); // first 15 minutes
 	    break;
 	  }
 

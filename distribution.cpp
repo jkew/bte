@@ -5,15 +5,23 @@ using namespace std;
 
 default_random_engine generator;
 
-unsigned int get_value_geometric(double prob) {
-  geometric_distribution<int> distribution(prob);
-  double number = distribution(generator);
+/**
+ * This function uses the exponential cummulative
+ * distribution function to return a value based off
+ * of some mean assuming a geometric/exponetial decay
+ * it uses a uniform distribution to pick the target
+ * probability
+ **/
+unsigned int get_value_geometric(unsigned int mean) {
+  unsigned int prob_int = get_value_uniform(0,999);
+  double prob = prob_int/1000;
+  double number = -(mean * log(-prob +1));
   if (number < 0) number = 0;
   return (unsigned int) number;
 }
 
 unsigned int get_value_geometric(distribution d) {
-  return get_value_geometric(d.prob);
+  return get_value_geometric(d.mean);
 }
 
 unsigned int get_value_uniform(unsigned int min, unsigned int max) {

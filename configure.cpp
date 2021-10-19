@@ -69,7 +69,6 @@ void initialize_simulation() {
       hour_load.sites = config[v.GetString()]["load"]["sites"][i].GetInt();
       assert(hour_load.requests >= hour_load.sites);
       assert(hour_load.requests >= hour_load.content);
-      assert(hour_load.users >= hour_load.sites);
       assert(hour_load.content >= hour_load.sites);
       sim.hours[i] = hour_load;
     }
@@ -105,9 +104,9 @@ distribution configure_dist(const Value &input) {
     d.max = input["max"].GetInt();
   } else if (strcmp(input["dist"].GetString(), "geometric") == 0) {
     d.dist = dist_model::GEOMETRIC;
-    assertm(input.HasMember("prob"), "Probability not set on geometric distribution");
-    assert(input["prob"].IsDouble());
-    d.prob = input["prob"].GetDouble();
+    assertm(input.HasMember("mean"), "Mean not set on geometric distribution");
+    assert(input["mean"].IsInt());
+    d.prob = input["mean"].GetInt();
   } else {
     assertm(false, "Only normal distributions are supported");
   }

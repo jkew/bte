@@ -102,7 +102,7 @@ The std c++ [libraries ](https://www.cplusplus.com/reference/random/normal_distr
 
 * `uniform` only uses the parameters `max` and `min`
 * `normal` uses the parameters `mean` and `stddev`
-* `geometric` uses `prob` which is the probability of each trial
+* `geometric` uses `mean` which is used in the cummulative distribution function `-(mean * log(-[random 0:1] +1))` to find a value
 
 ## Analyzing
 The output of the csv can be used with the visualization tool of your choice. A Tableau workbook is provided to help (used above).
