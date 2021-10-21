@@ -3,6 +3,7 @@
     "drivers": ["FrontendA", "FrontendB", "BackgroundProcess"],
     "FrontendA": {
 	"instances": 10,
+	"scheduled-instances": [5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 5, 5, 5, 5, 5],
 	"timeout": 900000,
 	"balanced": "content",
 	"growthmodel": "linear",

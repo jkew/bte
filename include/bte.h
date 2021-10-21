@@ -26,6 +26,8 @@ typedef enum {
 
 typedef struct {
   unsigned int instances;
+  unsigned int scheduled_instances[24];
+  bool         scheduled_scaling;
   unsigned int limit;
   unsigned int timeout;
   growth_model model;

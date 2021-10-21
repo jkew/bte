@@ -60,6 +60,7 @@ A node type is defined with an object such as
 ```
 "NodeTypeA": {
         "instances": 10,          // number of this type
+	"scheduled-instances": [5,5,10...] // Optional scheduled scaling of instances
         "timeout": 10000,          // request timeout in ms
         "balanced": "content",    // load balancing across instances
         "growthmodel": "linear",  // capacity growth model
@@ -82,6 +83,7 @@ A node type is defined with an object such as
 ```
 
 * `instances` defines the number of instances of this node type
+* `scheduled-instances` allows for instance count changes on the hour. You specify the number of instances at hour 1, hour 2 and so on. The number of scheduled instances must be less than the `instances` parameter.
 * `timeout` defines the timeout of requests on an instance, in ms
 * `balanced` defines how requests are balanced across those instances. The options are `random`, `content`, `sites`, `users`
 * `growthmodel` defines how capacity on an instance is regulated as load changes. Currently the options are simple `linear` and `logistic` models

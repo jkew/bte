@@ -200,8 +200,11 @@ bool tick() {
 	  case NORMAL:  // This really isn't a useful load model
 	    ms_splay = get_value_normal(30, 15)*60000;
 	    break;
+	  case LOGNORMAL:
+	    ms_splay = get_value_lognormal(30, 15)*60000;
+	    break;
 	  case GEOMETRIC:
-	    ms_splay = get_value_geometric(900000); // first 15 minutes
+	    ms_splay = get_value_geometric(1800000); // first 15 minutes
 	    break;
 	  }
 

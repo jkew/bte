@@ -24,6 +24,17 @@ unsigned int get_value_geometric(distribution d) {
   return get_value_geometric(d.mean);
 }
 
+unsigned int get_value_lognormal(unsigned int mean, unsigned int stddev) {
+  lognormal_distribution<double> distribution(mean, stddev);
+  double number = distribution(generator);
+  if (number < 0) number = 0;
+  return (unsigned int) number;
+}
+
+unsigned int get_value_lognormal(distribution d) {
+  return get_value_lognormal(d.mean, d.stddev);
+}
+
 unsigned int get_value_uniform(unsigned int min, unsigned int max) {
   uniform_int_distribution<int> distribution(min, max);
   double number = distribution(generator);
@@ -55,6 +66,8 @@ unsigned int get_value(distribution d) {
   case UNIFORM:
     return get_value_uniform(d);
   case GEOMETRIC:
+    return get_value_geometric(d);
+  case LOGNORMAL:
     return get_value_geometric(d);
   default:
     assert(false);

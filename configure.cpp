@@ -59,6 +59,8 @@ void initialize_simulation() {
       sim.distribution = dist_model::NORMAL;
     if (d == "geometric")
       sim.distribution = dist_model::GEOMETRIC;
+    if (d == "lognormal")
+      sim.distribution = dist_model::LOGNORMAL;
     
     for (int i = 0; i < 24; i++) {
       external_load hour_load;
@@ -82,8 +84,13 @@ void initialize_simulation() {
 
 distribution configure_dist(const Value &input) {
   distribution d;
-  if (strcmp(input["dist"].GetString(), "normal") == 0) {
-    d.dist = dist_model::NORMAL;
+  const char *dist = input["dist"].GetString();
+  
+  if (strcmp(dist, "normal") == 0 || strcmp(dist, "lognormal") == 0) {
+    if (strcmp(dist, "lognormal") == 0)
+      d.dist = dist_model::LOGNORMAL;
+    else
+      d.dist = dist_model::NORMAL;
     assertm(input.HasMember("mean"), "Mean not set on distribution");
     assertm(input.HasMember("stddev"), "Mean not set on distribution");
     assert(input["mean"].IsInt());
@@ -94,7 +101,7 @@ distribution configure_dist(const Value &input) {
       d.stddev = 1;
     if (d.mean == 0)
       d.mean = 1;
-  } else if (strcmp(input["dist"].GetString(), "uniform") == 0) {
+  } else if (strcmp(dist, "uniform") == 0) {
     d.dist = dist_model::UNIFORM;
     assertm(input.HasMember("min"), "Min not set on distribution");
     assertm(input.HasMember("max"), "Max not set on distribution");
@@ -102,7 +109,7 @@ distribution configure_dist(const Value &input) {
     assert(input["max"].IsInt());
     d.min = input["min"].GetInt();
     d.max = input["max"].GetInt();
-  } else if (strcmp(input["dist"].GetString(), "geometric") == 0) {
+  } else if (strcmp(dist, "geometric") == 0) {
     d.dist = dist_model::GEOMETRIC;
     assertm(input.HasMember("mean"), "Mean not set on geometric distribution");
     assert(input["mean"].IsInt());
@@ -126,10 +133,10 @@ void configure(const char *node) {
           "Node does have cache configuration");
   assertm(config[node].HasMember("self_time"),
           "Node does have self time configuration");
+  assertm(config[node].HasMember("instances"),
+	    "Node must have some sort of instance configuration");
   assertm(config[node].HasMember("dependencies"),
           "Node does have dependency configuration");
-  assertm(config[node].HasMember("instances"),
-          "Node does not specify the number of instances");
   assertm(config[node].HasMember("timeout"),
 	  "Node does not specify the number of timeout");
   assertm(config[node].HasMember("balanced"),
@@ -156,12 +163,28 @@ void configure(const char *node) {
   distribution self_value = configure_dist(config[node]["self_time"]);
   selftime[string(node)] = self_value;
   load_model load;
-  assert(config[node]["instances"].IsInt());
   assert(config[node]["timeout"].IsInt());
   assert(config[node]["limit"].IsInt());
-  load.instances = config[node]["instances"].GetInt();
   load.limit = config[node]["limit"].GetInt();
   load.timeout = config[node]["timeout"].GetInt();
+  load.instances = 1;
+  load.scheduled_scaling = false;
+  
+  // Static Scaling
+  if (config[node].HasMember("instances")) {
+    assert(config[node]["instances"].IsInt());
+    load.instances = config[node]["instances"].GetInt();
+  }
+  
+  // Scheduled Scaling
+  if (config[node].HasMember("scheduled-instances")) {
+    assertm(config[node]["scheduled-instances"].IsArray(), "Scheduled instances needs to be an array of 24 ints");
+    assertm(config[node]["scheduled-instances"].Size() == 24, "Scheduled instances needs to be an array of 24 ints");
+    for (int i = 0; i < 24; i++) {
+      load.scheduled_instances[i] = config[node]["scheduled-instances"][i].GetInt();
+    }
+    load.scheduled_scaling = true;
+  }
   
   // How is the response rate impacted by concurrent requests
   if (strcmp(config[node]["growthmodel"].GetString(), "linear") == 0) {
